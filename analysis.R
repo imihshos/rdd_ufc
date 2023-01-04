@@ -68,13 +68,11 @@ covarTest_mean(rdd_data_cov)
 reg_df <- df %>% select(R_odds, Winner, R_losses, loss_dif,win_streak_dif,lose_streak_dif,total_round_dif, longest_win_streak_dif) %>% mutate(R_odds=ifelse(R_odds>0, R_odds-100, R_odds+100)) %>% mutate(R_favourite = ifelse(R_odds >= 0, TRUE, FALSE)) %>% mutate(R_win=ifelse(Winner=="Red", 1,0)) %>% mutate(R_odds_cubic=R_odds**3) %>% select(-Winner)
 
 # linear regression
-# R_win = α + τ(R_favourite) + β1(R_odds) + β2(loss_dif) + ...
 reg_df_linear <- reg_df %>% select(-R_odds_cubic)
 reg <- lm(data = reg_df_linear, R_win ~ .)
 summary(reg)
 
 # nonlinear regression
-# R_win = α + τ(R_favourite) + β1(R_odds) + β1(R_odds)^3 + β2(loss_dif) + ...
 reg_nl <- lm(data = reg_df, R_win ~ .)
 summary(reg_nl)
 
